@@ -2,10 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(CharacterController))]
+[RequireComponent(typeof(ShootProjectile))]
 public class PlayerController : MonoBehaviour
 {
     #region private
     CharacterController p_CharacterController;
+    ShootProjectile p_ShootProjectile;
     [SerializeField]
     GameObject p_ShootStartPosition;
     [SerializeField]
@@ -22,6 +25,7 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         p_CharacterController = GetComponent<CharacterController>();
+        p_ShootProjectile = GetComponent<ShootProjectile>();
     }
 
     // Update is called once per frame
@@ -69,7 +73,8 @@ public class PlayerController : MonoBehaviour
         if (fire == 0) return;
 
         // Shoot!
-        Debug.DrawRay(p_ShootStartPosition.transform.position, this.transform.forward * 10, Color.black, 1);
+        p_ShootProjectile.Shoot(this.gameObject, p_ShootStartPosition.transform.position);
+        //Debug.DrawRay(p_ShootStartPosition.transform.position, this.transform.forward * 10, Color.black, 1);
         m_CurrentShootCooldown = p_ShootCooldown;
     }
 }

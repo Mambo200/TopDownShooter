@@ -14,7 +14,8 @@ GameObject:
   - component: {fileID: 4248429531083189920}
   - component: {fileID: 6436885114789803112}
   - component: {fileID: 8524936875059282860}
-  m_Layer: 0
+  - component: {fileID: 6303368168821561823}
+  m_Layer: 6
   m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -124,8 +125,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   p_ShootStartPosition: {fileID: 5629150014694154849}
+  p_ShootCooldown: 1
   m_Speed: 5
   m_RotationSpeed: 20
+  m_CurrentShootCooldown: 0
 --- !u!143 &8524936875059282860
 CharacterController:
   m_ObjectHideFlags: 0
@@ -152,6 +155,19 @@ CharacterController:
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &6303368168821561823
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 678673460763361537}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7d530eda8f252d545888f537b03b32ce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_ObjectToShoot: {fileID: 0}
 --- !u!1 &4674929093940276157
 GameObject:
   m_ObjectHideFlags: 0
@@ -164,7 +180,7 @@ GameObject:
   - component: {fileID: 5352169792155717607}
   - component: {fileID: 2173762672808477130}
   - component: {fileID: 4443203115399886420}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Nose
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -266,7 +282,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8809794813529558219}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: ShootStartPosition
   m_TagString: Untagged
   m_Icon: {fileID: 0}
