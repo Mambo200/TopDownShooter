@@ -118,7 +118,7 @@ GameObject:
   - component: {fileID: 6753330856383357538}
   - component: {fileID: 3830185174448462623}
   - component: {fileID: 7125520711670806617}
-  - component: {fileID: 2564122041821073191}
+  - component: {fileID: 5694165019578323346}
   m_Layer: 0
   m_Name: Kraken
   m_TagString: Untagged
@@ -237,7 +237,7 @@ NavMeshAgent:
   m_BaseOffset: 1
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
---- !u!114 &2564122041821073191
+--- !u!114 &5694165019578323346
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -246,7 +246,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 8188523974136360354}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 698a020a4768f914dad1c00fdce2e078, type: 3}
+  m_Script: {fileID: 11500000, guid: da787c86c074d314f925f904bc3288dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_MaxHealth: 10
