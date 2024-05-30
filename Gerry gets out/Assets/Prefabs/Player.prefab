@@ -125,7 +125,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   p_ShootStartPosition: {fileID: 5629150014694154849}
-  p_ShootCooldown: 1
+  p_ShootCooldown: 0.2
   m_Speed: 5
   m_RotationSpeed: 20
   m_CurrentShootCooldown: 0
@@ -167,7 +167,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d530eda8f252d545888f537b03b32ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ObjectToShoot: {fileID: 0}
+  m_ObjectToShoot: {fileID: 1725955832599697158, guid: 5a529faaa57f076478e94ea9a4a1eeea, type: 3}
 --- !u!1 &4674929093940276157
 GameObject:
   m_ObjectHideFlags: 0
