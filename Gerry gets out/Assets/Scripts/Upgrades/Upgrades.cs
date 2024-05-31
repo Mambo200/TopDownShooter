@@ -18,6 +18,8 @@ public class Upgrades
     public Upgrades()
     {
         Enchantment = new List<Upgrade>();
+
+        ResetAll();
     }
 
     public void AddUpgradeWithEvent(Upgrade _upgrade)

@@ -15,7 +15,7 @@ public class EnemySpawner : MonoBehaviour
     float p_MaxEnemySpawnInterval;
 
     private static EnemySpawner m_Instance;
-    public static EnemySpawner Get { get; }
+    public static EnemySpawner Get { get => m_Instance; }
 
     public float m_MinSpawnDistanceFromPlayer;
     [HideInInspector]
