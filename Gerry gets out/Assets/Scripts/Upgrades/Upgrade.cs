@@ -5,9 +5,71 @@ using UnityEngine;
 using UnityEngine.UIElements;
 
 /// <summary>Up- and downgrades for player</summary>
-public class Upgrade
+public class Upgrade : IEquatable<Upgrade>
 {
     public const float LEVELMULTIPLIER = 1.2f;
+
+    public int ID { get; private set; }
+    private static int IDCount = -1;
+
+    public event BaseValueChanged baseValueChanged;
+    public event LevelChanged levelChanged;
+    public event BaseValueActiveChanged baseValueActiveChanged;
+
+    public readonly string name;
+
+    public Upgrade()
+    {
+        name = "Upgrade";
+        ID = IDCount++;
+    }
+
+    /// <summary>
+    /// Create Upgrade Class
+    /// </summary>
+    /// <param name="_name">Name of Upgrade</param>
+    /// <param name="_baseMovementSpeedMultiplier">Movementspeed multiplier. If not set or set to 1, it will be deactivated</param>
+    /// <param name="_baseShootIntervallMultiplier">Shoot intervall multiplier. If not set or set to 1, it will be deactivated</param>
+    /// <param name="_baseDamageMultiplier">Damage multiplier. If not set or set to 1, it will be deactivated</param>
+    /// <param name="_baseBulletCollideCount">Bullet collide count. If not set or set to 1, it will be deactivated</param>
+    /// <exception cref="ArgumentNullException">Throwed if _name is null/></exception>
+    public Upgrade(string _name, float _baseMovementSpeedMultiplier = 1, float _baseShootIntervallMultiplier = 1, float _baseDamageMultiplier = 1, int _baseBulletCollideCount = 0, BaseValueChanged _baseValueChanged = null, LevelChanged _levelChanged = null, BaseValueActiveChanged _baseValueActiveChanged = null)
+    {
+        if (_name == null)
+            throw new ArgumentNullException(nameof(_name));
+        name = _name;
+
+        if (_baseMovementSpeedMultiplier != 1)
+        {
+            m_BaseMovementSpeedMultiplier = _baseMovementSpeedMultiplier;
+            m_BaseMovementSpeedMultiplierActive = true;
+        }
+
+        if (_baseShootIntervallMultiplier != 1)
+        {
+            m_BaseShootIntervallMultiplier = _baseShootIntervallMultiplier;
+            m_BaseShootIntervallMultiplierActive = true;
+        }
+
+        if (_baseDamageMultiplier != 1)
+        {
+            m_BaseDamageMultiplier = _baseDamageMultiplier;
+            m_BaseDamageMultiplierActive = true;
+        }
+
+        if (_baseBulletCollideCount != 0)
+        {
+            m_BaseBulletCollideCount = _baseBulletCollideCount;
+            m_BaseBulletCollideCountActive = true;
+        }
+
+        baseValueChanged = _baseValueChanged;
+        levelChanged = _levelChanged;
+        baseValueActiveChanged = _baseValueActiveChanged;
+
+
+        ID = IDCount++;
+    }
 
     private int p_Level;
     /// <summary>Level of Upgrade. The higher the better</summary>
@@ -25,50 +87,111 @@ public class Upgrade
             AfterLevelChanged(p_Level);
         }
     }
+    #region Previous multipliers
+    public float PreviousBaseMovementspeedMultiplier { get; private set; }
+    public float PreviousBaseShootIntervallMultiplier { get; private set; }
+    public float PreviousBaseDamageMultiplier { get; private set; }
+    public int PreviousBaseBulletCollideCount { get; private set; }
+    #endregion
 
     #region Multipliers
     private float m_BaseMovementSpeedMultiplier = 1;
     /// <summary>Speed Multiplier. The higher the better</summary>
-    public float BaseMovementSpeedMultiplier 
-    { 
-        get => m_BaseMovementSpeedMultiplier ;
-        private set => m_BaseMovementSpeedMultiplier = value;
+    public float BaseMovementSpeedMultiplier
+    {
+        get => m_BaseMovementSpeedMultiplier;
+        set
+        {
+            PreviousBaseMovementspeedMultiplier = m_BaseMovementSpeedMultiplier;
+            m_BaseMovementSpeedMultiplier = value;
+            baseValueChanged?.Invoke(this);
+        }
     }
+    private bool m_BaseMovementSpeedMultiplierActive = false;
     /// <summary>Multiplier is active in this Upgrade</summary>
-    public bool BaseMovementSpeedMultiplierActive { get; set; }
+    public bool BaseMovementSpeedMultiplierActive 
+    { 
+        get => m_BaseMovementSpeedMultiplierActive;
+        set
+        {
+            m_BaseMovementSpeedMultiplierActive = value;
+            baseValueActiveChanged?.Invoke(this);
+        }
+    }
+    // -------------------------------------------------------------------------------------------------------------- //
 
-
-    public float m_BaseShootIntervallMultiplier = 1;
+    private float m_BaseShootIntervallMultiplier = 1;
     /// <summary>Shoot interval multiplier. The lower the better</summary>
     public float BaseShootIntervallMultiplier
-    { 
+    {
         get => m_BaseShootIntervallMultiplier;
-        private set => m_BaseShootIntervallMultiplier = value;
+        set
+        {
+            PreviousBaseShootIntervallMultiplier = m_BaseShootIntervallMultiplier;
+            m_BaseShootIntervallMultiplier = value;
+            baseValueChanged?.Invoke(this);
+        }
     }
+    private bool m_BaseShootIntervallMultiplierActive = false;
     /// <summary>Multiplier is active in this Upgrade</summary>
-    public bool BaseShootIntervallMultiplierActive { get; set; }
+    public bool BaseShootIntervallMultiplierActive {
+        get => m_BaseShootIntervallMultiplierActive;
+        set
+        {
+            m_BaseShootIntervallMultiplierActive = value;
+            baseValueActiveChanged?.Invoke(this);
+        }
+    }
+    // -------------------------------------------------------------------------------------------------------------- //
 
-
-    public float m_BaseDamageMultiplier = 1;
+    private float m_BaseDamageMultiplier = 1;
     /// <summary>Damage multiplier. The higher the better</summary>
     public float BaseDamageMultiplier
     {
         get => m_BaseDamageMultiplier;
-        private set => m_BaseDamageMultiplier = value;
+        set
+        {
+            PreviousBaseDamageMultiplier = m_BaseDamageMultiplier;
+            m_BaseDamageMultiplier = value;
+            baseValueChanged?.Invoke(this);
+        }
     }
+    private bool m_BaseDamageMultiplierActive = false;
     /// <summary>Multiplier is active in this Upgrade</summary>
-    public bool BaseDamageMultiplierActive { get; set; }
+    public bool BaseDamageMultiplierActive 
+    {
+        get => m_BaseDamageMultiplierActive;
+        set
+        {
+            m_BaseDamageMultiplierActive = value;
+            baseValueActiveChanged?.Invoke(this);
+        }
+    }
+    // -------------------------------------------------------------------------------------------------------------- //
 
-
-    public int m_BaseBulletCollideCount = 0;
+    private int m_BaseBulletCollideCount = 0;
     /// <summary>Says how much enemies a bullet can collide with. The higher the better</summary>
     public int BaseBulletCollideCount
     {
         get => m_BaseBulletCollideCount;
-        private set => m_BaseBulletCollideCount = value;
+        set
+        {
+            PreviousBaseBulletCollideCount = m_BaseBulletCollideCount;
+            m_BaseBulletCollideCount = value;
+            baseValueChanged?.Invoke(this);
+        }
     }
+    private bool m_BaseBulletCollideCountActive = false;
     /// <summary>Multiplier is active in this Upgrade</summary>
-    public bool BaseBulletCollideCountActive { get; set; }
+    public bool BaseBulletCollideCountActive 
+    {
+        get => m_BaseBulletCollideCountActive;
+        set
+        {
+            m_BaseBulletCollideCountActive = value;
+            baseValueActiveChanged?.Invoke(this);
+        }
+    }
     #endregion
 
     #region Multiplier calculation
@@ -81,7 +204,21 @@ public class Upgrade
         if (!BaseMovementSpeedMultiplierActive)
             return 1;
         else
-            return m_BaseDamageMultiplier + (Level * LEVELMULTIPLIER); 
+            return GetMoveSpeedMultiplierByLevel(this, Level);
+    }
+    /// <summary>
+    /// Calculate multiplier for movementspeed by level
+    /// </summary>
+    /// <param name="_upgrade">Upgrade</param>
+    /// <param name="_level">Level the upgrade has</param>
+    /// <returns>Movementspeed multiplier at level</returns>
+    public static float GetMoveSpeedMultiplierByLevel(Upgrade _upgrade, int _level)
+    {
+        return _upgrade.BaseDamageMultiplier + (_level * LEVELMULTIPLIER);
+    }
+    public static float GetCustomMoveSpeedMultiplier(float _multiplier, int _level)
+    {
+        return _multiplier + (_level * LEVELMULTIPLIER);
     }
 
     /// <summary>
@@ -93,8 +230,23 @@ public class Upgrade
         if (!BaseShootIntervallMultiplierActive)
             return 1;
         else
-            return BaseShootIntervallMultiplier + (Level * LEVELMULTIPLIER);
+            return GetCurrentShootIntervalByLevel(this, Level);
     }
+    /// <summary>
+    /// Calculate multiplier for shoot interval by level
+    /// </summary>
+    /// <param name="_upgrade">Upgrade</param>
+    /// <param name="_level">Level the upgrade has</param>
+    /// <returns>Shoot interval multiplier at level</returns>
+    public static float GetCurrentShootIntervalByLevel(Upgrade _upgrade, int _level)
+    {
+        return _upgrade.BaseShootIntervallMultiplier + (_level * LEVELMULTIPLIER);
+    }
+    public static float GetCustomShootInterval(float _multiplier, int _level)
+    {
+        return _multiplier + (_level * LEVELMULTIPLIER);
+    }
+
 
     /// <summary>
     /// Calculate multiplier for damage
@@ -105,8 +257,23 @@ public class Upgrade
         if (!BaseDamageMultiplierActive)
             return 1;
         else
-            return BaseDamageMultiplier + (Level * LEVELMULTIPLIER);
+            return GetCurrentDamageByLevel(this, Level);
     }
+    /// <summary>
+    /// Calculate multiplier for damage by level
+    /// </summary>
+    /// <param name="_upgrade">Upgrade</param>
+    /// <param name="_level">Level the upgrade has</param>
+    /// <returns>Damage multiplier at level</returns>
+    public static float GetCurrentDamageByLevel(Upgrade _upgrade, int _level)
+    {
+        return _upgrade.BaseDamageMultiplier + (_level * LEVELMULTIPLIER);
+    }
+    public static float GetCustomDamageMultiplier(float _multiplier, int _level)
+    {
+        return _multiplier + (_level * LEVELMULTIPLIER);
+    }
+
 
     /// <summary>
     /// Calculate amount for bullet collide count
@@ -117,7 +284,21 @@ public class Upgrade
         if (!BaseBulletCollideCountActive)
             return 0;
         else
-            return (int)(BaseBulletCollideCount + (Level * LEVELMULTIPLIER));
+            return GettBulletCollideCountByLevel(this, Level);
+    }
+    /// <summary>
+    /// Calculate multiplier for bullet collide count by level
+    /// </summary>
+    /// <param name="_upgrade">Upgrade</param>
+    /// <param name="_level">Level the upgrade has</param>
+    /// <returns>Bullet collide cound at level</returns>
+    public static int GettBulletCollideCountByLevel(Upgrade _upgrade, int _level)
+    {
+        return (int) (_upgrade.BaseBulletCollideCount + (_level * LEVELMULTIPLIER));
+    }
+    public static int GetCustomBulletCollideCount(int _count, int _level)
+    {
+        return (int)(_count + (_level * LEVELMULTIPLIER));
     }
     #endregion
 
@@ -129,6 +310,40 @@ public class Upgrade
     /// <summary>Called after <see cref="Level"/> changed</summary>
     protected virtual void AfterLevelChanged(int _previousLevel)
     {
-
+        levelChanged.Invoke(this, _previousLevel);
     }
+
+    #region Equals and override
+    public override bool Equals(object obj)
+    {
+        return Equals(obj as Upgrade);
+    }
+
+    public bool Equals(Upgrade other)
+    {
+        return other is not null &&
+               ID == other.ID;
+    }
+
+    public override int GetHashCode()
+    {
+        return HashCode.Combine(ID);
+    }
+    #endregion
+
+    #region Operator
+    public static bool operator ==(Upgrade left, Upgrade right)
+    {
+        return EqualityComparer<Upgrade>.Default.Equals(left, right);
+    }
+
+    public static bool operator !=(Upgrade left, Upgrade right)
+    {
+        return !(left == right);
+    }
+    #endregion
 }
+
+public delegate void LevelChanged(Upgrade _upgrade, int _previousLevel);
+public delegate void BaseValueChanged(Upgrade _upgrade);
+public delegate void BaseValueActiveChanged(Upgrade _upgrade);
