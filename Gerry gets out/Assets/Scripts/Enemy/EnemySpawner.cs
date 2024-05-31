@@ -7,7 +7,8 @@ public class EnemySpawner : MonoBehaviour
 {
     [SerializeField]
     GameObject[] p_ToSpawn;
-    GameObject m_playerGameObject;
+    public GameObject m_playerGameObject { get; private set; }
+    public PlayerController m_playerController { get; private set; }
     [SerializeField]
     float p_SpawnRadius;
     [SerializeField]
@@ -31,6 +32,7 @@ public class EnemySpawner : MonoBehaviour
         m_Instance = this;
 
         m_playerGameObject = GameObject.FindGameObjectWithTag("Player");
+        m_playerController = m_playerGameObject.GetComponent<PlayerController>();
     }
     // Start is called before the first frame update
     void Start()

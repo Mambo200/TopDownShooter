@@ -30,7 +30,7 @@ public class Projectile : MonoBehaviour
         BaseEnemy enemy = collision.gameObject.GetComponent<BaseEnemy>();
         if (enemy == null) return;
 
-        enemy.TakeDamage(m_Damage);
+        enemy.TakeDamage(m_Damage * EnemySpawner.Get.m_playerController.PlayerUpgrades.DamageMultiplierTotal);
         Destroy(this.gameObject);
 
     }
