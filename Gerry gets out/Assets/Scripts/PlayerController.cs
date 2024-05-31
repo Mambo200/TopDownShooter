@@ -22,6 +22,11 @@ public class PlayerController : MonoBehaviour
     public float m_CurrentShootCooldown;
     #endregion
 
+    #region Upgrades
+    public float SpeedWithUpgrades { get => m_Speed * PlayerUpgrades.MoveSpeedMultiplierTotal; }
+    public float ShootCooldownWithUpgrades { get => p_ShootCooldown * PlayerUpgrades.ShootSpeedMultiplierTotal; }
+    #endregion
+
     // Start is called before the first frame update
     void Start()
     {
@@ -48,7 +53,7 @@ public class PlayerController : MonoBehaviour
         // Player movement
         Vector3 movement = new Vector3(horizontalInput, 0, verticalInput);
         movement = movement.normalized;
-        p_CharacterController.Move(movement * Time.deltaTime * m_Speed * PlayerUpgrades.MoveSpeedMultiplierTotal);
+        p_CharacterController.Move(movement * Time.deltaTime * SpeedWithUpgrades);
     }
     private void Rotation()
     {
@@ -77,6 +82,6 @@ public class PlayerController : MonoBehaviour
         // Shoot!
         p_ShootProjectile.Shoot(this.gameObject, p_ShootStartPosition.transform.position);
         //Debug.DrawRay(p_ShootStartPosition.transform.position, this.transform.forward * 10, Color.black, 1);
-        m_CurrentShootCooldown = p_ShootCooldown;
+        m_CurrentShootCooldown = ShootCooldownWithUpgrades;
     }
 }
