@@ -22,6 +22,7 @@ public class ShootProjectile : MonoBehaviour
     {
         // create Object
         GameObject go = GameObject.Instantiate(m_ObjectToShoot, _start, _parent.transform.localRotation);
+        go.GetComponent<Projectile>().m_Damage *= EnemySpawner.Get.m_playerController.PlayerUpgrades.DamageMultiplierTotal;
         return go;
     }
 }
