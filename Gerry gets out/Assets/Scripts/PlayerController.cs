@@ -13,6 +13,7 @@ public class PlayerController : MonoBehaviour
     GameObject p_ShootStartPosition;
     [SerializeField]
     float p_ShootCooldown;
+    public Upgrades PlayerUpgrades { get; private set; }
     #endregion
     #region public
     public int m_Speed;
@@ -21,11 +22,47 @@ public class PlayerController : MonoBehaviour
     public float m_CurrentShootCooldown;
     #endregion
 
+    #region Upgrades
+    public float SpeedWithUpgrades { get => m_Speed * PlayerUpgrades.MoveSpeedMultiplierTotal; }
+    public float ShootCooldownWithUpgrades { get => p_ShootCooldown * PlayerUpgrades.ShootSpeedMultiplierTotal; }
+    #endregion
+
     // Start is called before the first frame update
     void Start()
     {
         p_CharacterController = GetComponent<CharacterController>();
         p_ShootProjectile = GetComponent<ShootProjectile>();
+        PlayerUpgrades = new Upgrades();
+
+        // TESTING: Adding upgrades
+        PlayerUpgrades.AddUpgradeWithEvent(new Upgrade(
+            "Tap Dancer",
+            _baseMovementSpeedMultiplier: 3,
+            _baseShootIntervallMultiplier: 1.1f
+            ));
+
+        PlayerUpgrades.AddUpgradeWithEvent(new Upgrade(
+            "Machine Gun",
+            _baseShootIntervallMultiplier: .75f
+            ));
+
+        PlayerUpgrades.AddUpgradeWithEvent(new Upgrade(
+            "Colossus",
+            _baseMovementSpeedMultiplier: .5f,
+            _baseShootIntervallMultiplier: 1.2f,
+            _baseDamageMultiplier: 2
+            ));
+
+        PlayerUpgrades.AddUpgradeWithEvent(new Upgrade(
+            "Shotgun",
+            _baseBulletCollideCount: 1
+            ));
+
+        Debug.Log($"Upgrades: {PlayerUpgrades.Enchantment.Count}");
+        Debug.Log($"Movement: {PlayerUpgrades.MoveSpeedMultiplierTotal}");
+        Debug.Log($"Shot speed: {PlayerUpgrades.ShootSpeedMultiplierTotal}");
+        Debug.Log($"Damage: {PlayerUpgrades.DamageMultiplierTotal}");
+        Debug.Log($"Bullet Collision: {PlayerUpgrades.BulletCollisionTotal}");
     }
 
     // Update is called once per frame
@@ -33,7 +70,6 @@ public class PlayerController : MonoBehaviour
     {
         Movement();
         Rotation();
-
         Shoot();
     }
 
@@ -46,7 +82,7 @@ public class PlayerController : MonoBehaviour
         // Player movement
         Vector3 movement = new Vector3(horizontalInput, 0, verticalInput);
         movement = movement.normalized;
-        p_CharacterController.Move(movement * Time.deltaTime * m_Speed);
+        p_CharacterController.Move(movement * Time.deltaTime * SpeedWithUpgrades);
     }
     private void Rotation()
     {
@@ -75,6 +111,6 @@ public class PlayerController : MonoBehaviour
         // Shoot!
         p_ShootProjectile.Shoot(this.gameObject, p_ShootStartPosition.transform.position);
         //Debug.DrawRay(p_ShootStartPosition.transform.position, this.transform.forward * 10, Color.black, 1);
-        m_CurrentShootCooldown = p_ShootCooldown;
+        m_CurrentShootCooldown = ShootCooldownWithUpgrades;
     }
 }

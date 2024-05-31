@@ -15,13 +15,19 @@ public class ShootProjectile : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     public GameObject Shoot(GameObject _parent, Vector3 _start)
     {
         // create Object
         GameObject go = GameObject.Instantiate(m_ObjectToShoot, _start, _parent.transform.localRotation);
+        Projectile p = go.GetComponent<Projectile>();
+        if (p != null)
+        {
+            p.m_Damage *= EnemySpawner.Get.m_playerController.PlayerUpgrades.DamageMultiplierTotal;
+            p.m_AdditionalBulletCollisions += EnemySpawner.Get.m_playerController.PlayerUpgrades.BulletCollisionTotal;
+        }
         return go;
     }
 }

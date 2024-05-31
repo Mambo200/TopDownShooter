@@ -7,11 +7,13 @@ public class Projectile : MonoBehaviour
     public float m_Speed;
     public float m_Damage;
     public float m_Lifetime;
+    [HideInInspector]
+    public int m_AdditionalBulletCollisions = 0;
 
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
@@ -31,7 +33,8 @@ public class Projectile : MonoBehaviour
         if (enemy == null) return;
 
         enemy.TakeDamage(m_Damage);
-        Destroy(this.gameObject);
+        if (--m_AdditionalBulletCollisions < 0)
+            Destroy(this.gameObject);
 
     }
 }

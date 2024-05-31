@@ -7,14 +7,15 @@ public class EnemySpawner : MonoBehaviour
 {
     [SerializeField]
     GameObject[] p_ToSpawn;
-    GameObject m_playerGameObject;
+    public GameObject m_playerGameObject { get; private set; }
+    public PlayerController m_playerController { get; private set; }
     [SerializeField]
     float p_SpawnRadius;
     [SerializeField]
     float p_MaxEnemySpawnInterval;
 
     private static EnemySpawner m_Instance;
-    public static EnemySpawner Get { get; }
+    public static EnemySpawner Get { get => m_Instance; }
 
     public float m_MinSpawnDistanceFromPlayer;
     [HideInInspector]
@@ -31,6 +32,7 @@ public class EnemySpawner : MonoBehaviour
         m_Instance = this;
 
         m_playerGameObject = GameObject.FindGameObjectWithTag("Player");
+        m_playerController = m_playerGameObject.GetComponent<PlayerController>();
     }
     // Start is called before the first frame update
     void Start()
@@ -46,10 +48,10 @@ public class EnemySpawner : MonoBehaviour
         {
             GameObject spawned = SpawnEnemy();
             m_CurrentEnemySpawnInterval = p_MaxEnemySpawnInterval;
-            if(spawned)
-                Debug.Log("Enemy spawned", spawned);
-            else
-                Debug.LogWarning("No Enemy spawned", spawned);
+            //if(spawned)
+            //    Debug.Log("Enemy spawned", spawned);
+            //else
+            //    Debug.LogWarning("No Enemy spawned", spawned);
         }
 
     }
