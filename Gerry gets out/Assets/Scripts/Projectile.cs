@@ -33,7 +33,7 @@ public class Projectile : MonoBehaviour
         if (enemy == null) return;
 
         enemy.TakeDamage(m_Damage);
-        if (--m_AdditionalBulletCollisions < 1)
+        if (--m_AdditionalBulletCollisions < 0)
             Destroy(this.gameObject);
 
     }

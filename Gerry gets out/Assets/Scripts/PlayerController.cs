@@ -33,6 +33,36 @@ public class PlayerController : MonoBehaviour
         p_CharacterController = GetComponent<CharacterController>();
         p_ShootProjectile = GetComponent<ShootProjectile>();
         PlayerUpgrades = new Upgrades();
+
+        // TESTING: Adding upgrades
+        PlayerUpgrades.AddUpgradeWithEvent(new Upgrade(
+            "Tap Dancer",
+            _baseMovementSpeedMultiplier: 3,
+            _baseShootIntervallMultiplier: 1.1f
+            ));
+
+        PlayerUpgrades.AddUpgradeWithEvent(new Upgrade(
+            "Machine Gun",
+            _baseShootIntervallMultiplier: .75f
+            ));
+
+        PlayerUpgrades.AddUpgradeWithEvent(new Upgrade(
+            "Colossus",
+            _baseMovementSpeedMultiplier: .5f,
+            _baseShootIntervallMultiplier: 1.2f,
+            _baseDamageMultiplier: 2
+            ));
+
+        PlayerUpgrades.AddUpgradeWithEvent(new Upgrade(
+            "Shotgun",
+            _baseBulletCollideCount: 1
+            ));
+
+        Debug.Log($"Upgrades: {PlayerUpgrades.Enchantment.Count}");
+        Debug.Log($"Movement: {PlayerUpgrades.MoveSpeedMultiplierTotal}");
+        Debug.Log($"Shot speed: {PlayerUpgrades.ShootSpeedMultiplierTotal}");
+        Debug.Log($"Damage: {PlayerUpgrades.DamageMultiplierTotal}");
+        Debug.Log($"Bullet Collision: {PlayerUpgrades.BulletCollisionTotal}");
     }
 
     // Update is called once per frame
@@ -40,7 +70,6 @@ public class PlayerController : MonoBehaviour
     {
         Movement();
         Rotation();
-
         Shoot();
     }
 

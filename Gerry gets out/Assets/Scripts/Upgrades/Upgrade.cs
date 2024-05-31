@@ -7,7 +7,7 @@ using UnityEngine.UIElements;
 /// <summary>Up- and downgrades for player</summary>
 public class Upgrade : IEquatable<Upgrade>
 {
-    public const float LEVELMULTIPLIER = 1.2f;
+    public const float LEVELMULTIPLIER = .1f;
 
     public int ID { get; private set; }
     private static int IDCount = -1;
@@ -22,6 +22,7 @@ public class Upgrade : IEquatable<Upgrade>
     {
         name = "Upgrade";
         ID = IDCount++;
+        Level = 1;
     }
 
     /// <summary>
@@ -33,11 +34,16 @@ public class Upgrade : IEquatable<Upgrade>
     /// <param name="_baseDamageMultiplier">Damage multiplier. If not set or set to 1, it will be deactivated</param>
     /// <param name="_baseBulletCollideCount">Bullet collide count. If not set or set to 1, it will be deactivated</param>
     /// <exception cref="ArgumentNullException">Throwed if _name is null/></exception>
-    public Upgrade(string _name, float _baseMovementSpeedMultiplier = 1, float _baseShootIntervallMultiplier = 1, float _baseDamageMultiplier = 1, int _baseBulletCollideCount = 0, BaseValueChanged _baseValueChanged = null, LevelChanged _levelChanged = null, BaseValueActiveChanged _baseValueActiveChanged = null)
+    public Upgrade(string _name, int _level = 1, float _baseMovementSpeedMultiplier = 1, float _baseShootIntervallMultiplier = 1, float _baseDamageMultiplier = 1, int _baseBulletCollideCount = 0, BaseValueChanged _baseValueChanged = null, LevelChanged _levelChanged = null, BaseValueActiveChanged _baseValueActiveChanged = null)
     {
         if (_name == null)
             throw new ArgumentNullException(nameof(_name));
         name = _name;
+
+        if (_level > 0)
+            p_Level = _level;
+        else
+            Level = 1;
 
         if (_baseMovementSpeedMultiplier != 1)
         {
@@ -72,12 +78,14 @@ public class Upgrade : IEquatable<Upgrade>
     }
 
     private int p_Level;
-    /// <summary>Level of Upgrade. The higher the better</summary>
+    /// <summary>Level of Upgrade. The higher the better. Level 0 or below is not allowed.</summary>
     public int Level
     {
         get { return p_Level; }
         set
         {
+            if (value < 0)
+                return;
             var v = p_Level;
             if (p_Level == value)
                 return;

@@ -48,10 +48,10 @@ public class EnemySpawner : MonoBehaviour
         {
             GameObject spawned = SpawnEnemy();
             m_CurrentEnemySpawnInterval = p_MaxEnemySpawnInterval;
-            if(spawned)
-                Debug.Log("Enemy spawned", spawned);
-            else
-                Debug.LogWarning("No Enemy spawned", spawned);
+            //if(spawned)
+            //    Debug.Log("Enemy spawned", spawned);
+            //else
+            //    Debug.LogWarning("No Enemy spawned", spawned);
         }
 
     }

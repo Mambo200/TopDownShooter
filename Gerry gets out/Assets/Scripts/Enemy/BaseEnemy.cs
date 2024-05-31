@@ -45,7 +45,7 @@ public abstract class BaseEnemy : MonoBehaviour
         if (_damage < 0) return false;
 
         m_CurrentHealth -= CalculateDamageWithArmor(_damage);
-        if (m_CurrentHealth < 0)
+        if (m_CurrentHealth <= 0)
         {
             Death();
             return true;
