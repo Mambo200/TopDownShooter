@@ -109,8 +109,8 @@ public class Upgrade : IEquatable<Upgrade>
     }
     private bool m_BaseMovementSpeedMultiplierActive = false;
     /// <summary>Multiplier is active in this Upgrade</summary>
-    public bool BaseMovementSpeedMultiplierActive 
-    { 
+    public bool BaseMovementSpeedMultiplierActive
+    {
         get => m_BaseMovementSpeedMultiplierActive;
         set
         {
@@ -134,7 +134,8 @@ public class Upgrade : IEquatable<Upgrade>
     }
     private bool m_BaseShootIntervallMultiplierActive = false;
     /// <summary>Multiplier is active in this Upgrade</summary>
-    public bool BaseShootIntervallMultiplierActive {
+    public bool BaseShootIntervallMultiplierActive
+    {
         get => m_BaseShootIntervallMultiplierActive;
         set
         {
@@ -158,7 +159,7 @@ public class Upgrade : IEquatable<Upgrade>
     }
     private bool m_BaseDamageMultiplierActive = false;
     /// <summary>Multiplier is active in this Upgrade</summary>
-    public bool BaseDamageMultiplierActive 
+    public bool BaseDamageMultiplierActive
     {
         get => m_BaseDamageMultiplierActive;
         set
@@ -183,7 +184,7 @@ public class Upgrade : IEquatable<Upgrade>
     }
     private bool m_BaseBulletCollideCountActive = false;
     /// <summary>Multiplier is active in this Upgrade</summary>
-    public bool BaseBulletCollideCountActive 
+    public bool BaseBulletCollideCountActive
     {
         get => m_BaseBulletCollideCountActive;
         set
@@ -204,7 +205,7 @@ public class Upgrade : IEquatable<Upgrade>
         if (!BaseMovementSpeedMultiplierActive)
             return 1;
         else
-            return GetMoveSpeedMultiplierByLevel(this, Level);
+            return GetMoveSpeedMultiplierByLevel(this, Level, false);
     }
     /// <summary>
     /// Calculate multiplier for movementspeed by level
@@ -212,9 +213,15 @@ public class Upgrade : IEquatable<Upgrade>
     /// <param name="_upgrade">Upgrade</param>
     /// <param name="_level">Level the upgrade has</param>
     /// <returns>Movementspeed multiplier at level</returns>
-    public static float GetMoveSpeedMultiplierByLevel(Upgrade _upgrade, int _level)
+    public static float GetMoveSpeedMultiplierByLevel(Upgrade _upgrade, int _level, bool _checkActiveness)
     {
-        return _upgrade.BaseDamageMultiplier + (_level * LEVELMULTIPLIER);
+        float tr = _upgrade.BaseDamageMultiplier + (_level * LEVELMULTIPLIER);
+        if (!_checkActiveness)
+            return tr;
+
+        if (!_upgrade.BaseMovementSpeedMultiplierActive) return 1;
+        else
+            return tr;
     }
     public static float GetCustomMoveSpeedMultiplier(float _multiplier, int _level)
     {
@@ -230,7 +237,7 @@ public class Upgrade : IEquatable<Upgrade>
         if (!BaseShootIntervallMultiplierActive)
             return 1;
         else
-            return GetCurrentShootIntervalByLevel(this, Level);
+            return GetShootIntervalByLevel(this, Level, false);
     }
     /// <summary>
     /// Calculate multiplier for shoot interval by level
@@ -238,9 +245,15 @@ public class Upgrade : IEquatable<Upgrade>
     /// <param name="_upgrade">Upgrade</param>
     /// <param name="_level">Level the upgrade has</param>
     /// <returns>Shoot interval multiplier at level</returns>
-    public static float GetCurrentShootIntervalByLevel(Upgrade _upgrade, int _level)
+    public static float GetShootIntervalByLevel(Upgrade _upgrade, int _level, bool _checkActiveness)
     {
-        return _upgrade.BaseShootIntervallMultiplier + (_level * LEVELMULTIPLIER);
+        float tr = _upgrade.BaseShootIntervallMultiplier + (_level * LEVELMULTIPLIER);
+        if (!_checkActiveness)
+            return tr;
+
+        if (!_upgrade.BaseShootIntervallMultiplierActive) return 1;
+        else
+            return tr;
     }
     public static float GetCustomShootInterval(float _multiplier, int _level)
     {
@@ -257,7 +270,7 @@ public class Upgrade : IEquatable<Upgrade>
         if (!BaseDamageMultiplierActive)
             return 1;
         else
-            return GetCurrentDamageByLevel(this, Level);
+            return GetDamageByLevel(this, Level, false);
     }
     /// <summary>
     /// Calculate multiplier for damage by level
@@ -265,9 +278,15 @@ public class Upgrade : IEquatable<Upgrade>
     /// <param name="_upgrade">Upgrade</param>
     /// <param name="_level">Level the upgrade has</param>
     /// <returns>Damage multiplier at level</returns>
-    public static float GetCurrentDamageByLevel(Upgrade _upgrade, int _level)
+    public static float GetDamageByLevel(Upgrade _upgrade, int _level, bool _checkActiveness)
     {
-        return _upgrade.BaseDamageMultiplier + (_level * LEVELMULTIPLIER);
+        float tr = _upgrade.BaseDamageMultiplier + (_level * LEVELMULTIPLIER);
+        if (!_checkActiveness)
+            return tr;
+
+        if (!_upgrade.BaseDamageMultiplierActive) return 1;
+        else
+            return tr;
     }
     public static float GetCustomDamageMultiplier(float _multiplier, int _level)
     {
@@ -284,7 +303,7 @@ public class Upgrade : IEquatable<Upgrade>
         if (!BaseBulletCollideCountActive)
             return 0;
         else
-            return GettBulletCollideCountByLevel(this, Level);
+            return GettBulletCollideCountByLevel(this, Level, false);
     }
     /// <summary>
     /// Calculate multiplier for bullet collide count by level
@@ -292,9 +311,15 @@ public class Upgrade : IEquatable<Upgrade>
     /// <param name="_upgrade">Upgrade</param>
     /// <param name="_level">Level the upgrade has</param>
     /// <returns>Bullet collide cound at level</returns>
-    public static int GettBulletCollideCountByLevel(Upgrade _upgrade, int _level)
+    public static int GettBulletCollideCountByLevel(Upgrade _upgrade, int _level, bool _checkActiveness)
     {
-        return (int) (_upgrade.BaseBulletCollideCount + (_level * LEVELMULTIPLIER));
+        int tr = (int)(_upgrade.BaseBulletCollideCount + (_level * LEVELMULTIPLIER));
+        if (!_checkActiveness)
+            return tr;
+
+        if (!_upgrade.BaseDamageMultiplierActive) return 0;
+        else
+            return tr;
     }
     public static int GetCustomBulletCollideCount(int _count, int _level)
     {

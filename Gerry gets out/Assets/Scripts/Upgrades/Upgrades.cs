@@ -9,7 +9,7 @@ using UnityEngine;
 
 public class Upgrades
 {
-    public List<Tuple<Upgrade, int>> Enchantment { get; set; }
+    public List<Upgrade> Enchantment { get; set; }
     public float MoveSpeedMultiplierTotal { get; private set; }
     public float ShootSpeedMultiplierTotal { get; private set; }
     public float DamageMultiplierTotal { get; private set; }
@@ -17,7 +17,7 @@ public class Upgrades
 
     public Upgrades()
     {
-        Enchantment = new List<Tuple<Upgrade, int>>();
+        Enchantment = new List<Upgrade>();
     }
 
     public void AddUpgradeWithEvent(Upgrade _upgrade)
@@ -25,35 +25,40 @@ public class Upgrades
         _upgrade.levelChanged += LevelChanged;
         _upgrade.baseValueChanged += BaseValueChanged;
         _upgrade.baseValueActiveChanged += BaseValueActiveChanged;
-        Enchantment.Add(new Tuple<Upgrade, int>(_upgrade, _upgrade.Level));
-
+        Enchantment.Add(_upgrade);
+        AddToMultiplier(_upgrade);
     }
     public void AddUpgradeWithoutEvent(Upgrade _upgrade)
     {
-        Enchantment.Add(new Tuple<Upgrade, int>(_upgrade, _upgrade.Level));
+        Enchantment.Add(_upgrade);
+        AddToMultiplier(_upgrade);
     }
 
     private void BaseValueChanged(Upgrade _upgrade)
     {
-        // remove old values
-        MoveSpeedMultiplierTotal /= _upgrade.PreviousBaseMovementspeedMultiplier;
-        ShootSpeedMultiplierTotal /= _upgrade.PreviousBaseShootIntervallMultiplier;
-        DamageMultiplierTotal /= _upgrade.PreviousBaseDamageMultiplier;
-        BulletCollisionTotal -= _upgrade.PreviousBaseBulletCollideCount;
+        // This is very much impossible. You could remove the old value, but you do not know on which multiplier the upgrade go added.
+        // Level does have an impact, too. So to be sure when a base value gets updates, it updates everything just to be sure.
+        // Hopefully this does not get called to often lol.
 
-        // add new values
-        MoveSpeedMultiplierTotal *= _upgrade.GetCurrentMoveSpeedMultiplier();
-        ShootSpeedMultiplierTotal *= _upgrade.GetCurrentShootIntervallMultiplier();
-        DamageMultiplierTotal *= _upgrade.GetCurrentDamageMultiplier();
-        BulletCollisionTotal += _upgrade.GetCurrentBulletCollideCount();
+        RecalculateAll();
     }
     private void LevelChanged(Upgrade _upgrade, int _previousLevel)
     {
+        // remove old calculation
+        MoveSpeedMultiplierTotal /= Upgrade.GetMoveSpeedMultiplierByLevel(_upgrade, _previousLevel, true);
+        ShootSpeedMultiplierTotal /= Upgrade.GetShootIntervalByLevel(_upgrade, _previousLevel, true);
+        DamageMultiplierTotal /= Upgrade.GetDamageByLevel(_upgrade, _previousLevel, true);
+        BulletCollisionTotal -= Upgrade.GettBulletCollideCountByLevel(_upgrade, _previousLevel, true);
 
+        // add new calculation
+        AddToMultiplier(_upgrade);
     }
     private void BaseValueActiveChanged(Upgrade _upgrade)
     {
-
+        // The scenario is one value got from not active to active. I remove this value which was not calculated in before and give it now back.
+        // Because of that recalculation of everything.
+        // But tbh this is very stupid this should never be a thing.
+        RecalculateAll();
     }
 
     public void RecalculateAll()
@@ -61,10 +66,7 @@ public class Upgrades
         ResetAll();
         foreach (var upgrade in Enchantment)
         {
-            MoveSpeedMultiplierTotal *= upgrade.Item1.GetCurrentMoveSpeedMultiplier();
-            ShootSpeedMultiplierTotal *= upgrade.Item1.GetCurrentShootIntervallMultiplier();
-            DamageMultiplierTotal *= upgrade.Item1.GetCurrentDamageMultiplier();
-            BulletCollisionTotal += upgrade.Item1.GetCurrentBulletCollideCount();
+            AddToMultiplier(upgrade);
         }
     }
 
@@ -77,5 +79,13 @@ public class Upgrades
         ShootSpeedMultiplierTotal = 1;
         DamageMultiplierTotal = 1;
         BulletCollisionTotal = 0;
+    }
+
+    private void AddToMultiplier(Upgrade _upgrade)
+    {
+        MoveSpeedMultiplierTotal *= _upgrade.GetCurrentMoveSpeedMultiplier();
+        ShootSpeedMultiplierTotal *= _upgrade.GetCurrentShootIntervallMultiplier();
+        DamageMultiplierTotal *= _upgrade.GetCurrentDamageMultiplier();
+        BulletCollisionTotal += _upgrade.GetCurrentBulletCollideCount();
     }
 }
