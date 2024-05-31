@@ -13,6 +13,7 @@ public class PlayerController : MonoBehaviour
     GameObject p_ShootStartPosition;
     [SerializeField]
     float p_ShootCooldown;
+    public Upgrades PlayerUpgrades { get; private set; }
     #endregion
     #region public
     public int m_Speed;
@@ -26,6 +27,7 @@ public class PlayerController : MonoBehaviour
     {
         p_CharacterController = GetComponent<CharacterController>();
         p_ShootProjectile = GetComponent<ShootProjectile>();
+        PlayerUpgrades = new Upgrades();
     }
 
     // Update is called once per frame
@@ -46,7 +48,7 @@ public class PlayerController : MonoBehaviour
         // Player movement
         Vector3 movement = new Vector3(horizontalInput, 0, verticalInput);
         movement = movement.normalized;
-        p_CharacterController.Move(movement * Time.deltaTime * m_Speed);
+        p_CharacterController.Move(movement * Time.deltaTime * m_Speed * PlayerUpgrades.MoveSpeedMultiplierTotal);
     }
     private void Rotation()
     {
