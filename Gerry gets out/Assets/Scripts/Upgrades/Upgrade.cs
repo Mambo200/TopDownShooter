@@ -346,7 +346,7 @@ public class Upgrade : IEquatable<Upgrade>
     /// <summary>Called after <see cref="Level"/> changed</summary>
     protected virtual void AfterLevelChanged(int _previousLevel)
     {
-        levelChanged.Invoke(this, _previousLevel);
+        levelChanged?.Invoke(this, _previousLevel);
     }
 
     #region Equals and override

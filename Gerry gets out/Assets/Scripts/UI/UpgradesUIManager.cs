@@ -113,9 +113,11 @@ public class UpgradesUIManager : MonoBehaviour
                     + upgradesShown[i].BaseDamageMultiplier;
             
             if (upgradesShown[i].BaseBulletCollideCountActive)
-                toShow = Environment.NewLine 
+                toShow += Environment.NewLine 
                     + "Add projectile collide count: " 
                     + upgradesShown[i].BaseBulletCollideCount;
+
+            p_ButtonsText[i].text = toShow;
         }
     }
     public void StopUpgrade()
@@ -140,15 +142,15 @@ public class UpgradesUIManager : MonoBehaviour
 
         int range = 0;
 
-        const int movespeedMaxRange = 15;
-        const int shotspeedMaxRange = 10;
-        const int damageMaxRange = 10;
-        const int bulletMaxRange = 100;
+        const int movespeedMaxRange = 2;
+        const int shotspeedMaxRange = 5;
+        const int damageMaxRange = 7;
         const int onebulletMaxRange = 95;
         const int twobulletsMaxRange = 100;
+        const int bulletMaxRange = 100;
 
         // Move speed
-        if (UnityEngine.Random.Range(0, upgradeCount + 1) == 0)
+        if (UnityEngine.Random.Range(0, upgradeCount + 2) == 0)
         {
             range = UnityEngine.Random.Range(1, movespeedMaxRange);
             upgrade.BaseMovementSpeedMultiplier = (float)range / 100 + 1;
@@ -156,24 +158,25 @@ public class UpgradesUIManager : MonoBehaviour
             upgradeCount++;
         }
         // Shot speed
-        if (UnityEngine.Random.Range(0, upgradeCount + 1) == 0)
+        if (UnityEngine.Random.Range(0, upgradeCount + 2) == 0)
         {
             range = UnityEngine.Random.Range(1, shotspeedMaxRange);
-            upgrade.BaseShootIntervallMultiplier = (float)range / 100 + 1;
+            upgrade.BaseShootIntervallMultiplier = (float)range / -100 + 1;
             upgrade.BaseShootIntervallMultiplierActive = true;
             upgradeCount++;
         }
 
         // Damage
-        if (UnityEngine.Random.Range(0, upgradeCount + 1) == 0)
+        if (UnityEngine.Random.Range(0, upgradeCount + 2) == 0)
         {
             range = UnityEngine.Random.Range(1, damageMaxRange);
             upgrade.BaseDamageMultiplier = (float)range / 100 + 1;
             upgrade.BaseDamageMultiplierActive = true;
+            upgradeCount++;
         }
 
         // Bullet count
-        range = UnityEngine.Random.Range(0, bulletMaxRange);
+        range = UnityEngine.Random.Range(0, bulletMaxRange + 1);
         if (range >= onebulletMaxRange)
         {
             upgrade.BaseBulletCollideCount++;
@@ -197,7 +200,7 @@ public class UpgradesUIManager : MonoBehaviour
             upgrade.BaseMovementSpeedMultiplier = (float)movespeedMaxRange / 100 + 1;
             upgrade.BaseMovementSpeedMultiplierActive = true;
             upgradeCount++;
-            upgrade.BaseShootIntervallMultiplier = (float)shotspeedMaxRange / 100 + 1;
+            upgrade.BaseShootIntervallMultiplier = (float)shotspeedMaxRange / -100 + 1;
             upgrade.BaseShootIntervallMultiplierActive = true;
             upgradeCount++;
             upgrade.BaseDamageMultiplier = (float)damageMaxRange / 100 + 1;
@@ -236,5 +239,6 @@ public class UpgradesUIManager : MonoBehaviour
     public void AquireUpgrade(int _buttonIndex)
     {
         EnemySpawner.Get.m_playerController.PlayerUpgrades.AddUpgradeWithEvent(upgradesShown[_buttonIndex]);
+        StopUpgrade();
     }
 }
