@@ -1825,12 +1825,12 @@ GameObject:
   - component: {fileID: 1928129628}
   - component: {fileID: 1928129627}
   m_Layer: 5
-  m_Name: Image
+  m_Name: Upgrade UI/Image
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1928129626
 RectTransform:
   m_ObjectHideFlags: 0
