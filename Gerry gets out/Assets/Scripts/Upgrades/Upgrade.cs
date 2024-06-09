@@ -258,7 +258,7 @@ public class Upgrade : IEquatable<Upgrade>
     /// <returns>Shoot interval multiplier at level</returns>
     public static float GetShootIntervalByLevel(Upgrade _upgrade, int _level, bool _checkActiveness)
     {
-        float tr = _upgrade.BaseShootIntervallMultiplier + (_level * LEVELMULTIPLIER);
+        float tr = _upgrade.BaseShootIntervallMultiplier - (_level * LEVELMULTIPLIER);
         if (!_checkActiveness)
             return tr;
 
