@@ -125,8 +125,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   p_ShootStartPosition: {fileID: 5629150014694154849}
-  p_ShootCooldown: 0.2
-  m_Speed: 5
+  p_ShootCooldown: 1.5
+  m_Speed: 4
   m_RotationSpeed: 20
   m_CurrentShootCooldown: 0
 --- !u!143 &8524936875059282860

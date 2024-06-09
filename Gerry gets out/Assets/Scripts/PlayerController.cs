@@ -22,6 +22,8 @@ public class PlayerController : MonoBehaviour
     public float m_CurrentShootCooldown;
     #endregion
 
+    public float ShootCooldown { get => p_ShootCooldown; }
+
     #region Upgrades
     public float SpeedWithUpgrades { get => m_Speed * PlayerUpgrades.MoveSpeedMultiplierTotal; }
     public float ShootCooldownWithUpgrades { get => p_ShootCooldown * PlayerUpgrades.ShootSpeedMultiplierTotal; }
