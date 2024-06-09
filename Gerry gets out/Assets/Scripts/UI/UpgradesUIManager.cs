@@ -20,6 +20,9 @@ public class UpgradesUIManager : MonoBehaviour
     [SerializeField]
     private Button[] p_Buttons;
     private TMPro.TextMeshProUGUI[] p_ButtonsText;
+
+    public bool UpgradeWindowOpen { get; private set; }
+
     private void Awake()
     {
         if (p_Instance != null)
@@ -76,6 +79,7 @@ public class UpgradesUIManager : MonoBehaviour
     /// <param name="_upgradecount">amount of upgrades shown. Max count is length of <see cref="p_Buttons"/></param>
     public void StartUpgrade(int _upgradecount)
     {
+        UpgradeWindowOpen = true;
         Time.timeScale = 0;
         p_MainGameObject.SetActive(true);
         p_ButtonParent.SetActive(true);
@@ -122,6 +126,7 @@ public class UpgradesUIManager : MonoBehaviour
     }
     public void StopUpgrade()
     {
+        UpgradeWindowOpen = false;
         Time.timeScale = 1;
         DeactivateAllUIElements();
     }
