@@ -65,6 +65,7 @@ public abstract class BaseEnemy : MonoBehaviour
 
     virtual protected void Death()
     {
+        EnemySpawner.Get.AddToKillCount();
         Destroy(this.gameObject);
     }
 }

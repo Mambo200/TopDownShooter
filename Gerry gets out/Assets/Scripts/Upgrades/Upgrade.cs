@@ -16,13 +16,15 @@ public class Upgrade : IEquatable<Upgrade>
     public event LevelChanged levelChanged;
     public event BaseValueActiveChanged baseValueActiveChanged;
 
-    public readonly string name;
+    public string Name { get; set; }
+    public Rarity Rarity { get; set; }
 
     public Upgrade()
     {
-        name = "Upgrade";
+        Name = "Upgrade";
         ID = IDCount++;
         Level = 1;
+        Rarity = Rarity.UNCOMMON;
     }
 
     /// <summary>
@@ -34,11 +36,11 @@ public class Upgrade : IEquatable<Upgrade>
     /// <param name="_baseDamageMultiplier">Damage multiplier. If not set or set to 1, it will be deactivated</param>
     /// <param name="_baseBulletCollideCount">Bullet collide count. If not set or set to 1, it will be deactivated</param>
     /// <exception cref="ArgumentNullException">Throwed if _name is null/></exception>
-    public Upgrade(string _name, int _level = 1, float _baseMovementSpeedMultiplier = 1, float _baseShootIntervallMultiplier = 1, float _baseDamageMultiplier = 1, int _baseBulletCollideCount = 0, BaseValueChanged _baseValueChanged = null, LevelChanged _levelChanged = null, BaseValueActiveChanged _baseValueActiveChanged = null)
+    public Upgrade(string _name, int _level = 1, float _baseMovementSpeedMultiplier = 1, float _baseShootIntervallMultiplier = 1, float _baseDamageMultiplier = 1, int _baseBulletCollideCount = 0, Rarity _rarity = Rarity.COMMON, BaseValueChanged _baseValueChanged = null, LevelChanged _levelChanged = null, BaseValueActiveChanged _baseValueActiveChanged = null)
     {
         if (_name == null)
             throw new ArgumentNullException(nameof(_name));
-        name = _name;
+        Name = _name;
 
         if (_level > 0)
             p_Level = _level;
@@ -73,6 +75,7 @@ public class Upgrade : IEquatable<Upgrade>
         levelChanged = _levelChanged;
         baseValueActiveChanged = _baseValueActiveChanged;
 
+        Rarity = _rarity;
 
         ID = IDCount++;
     }
@@ -343,7 +346,7 @@ public class Upgrade : IEquatable<Upgrade>
     /// <summary>Called after <see cref="Level"/> changed</summary>
     protected virtual void AfterLevelChanged(int _previousLevel)
     {
-        levelChanged.Invoke(this, _previousLevel);
+        levelChanged?.Invoke(this, _previousLevel);
     }
 
     #region Equals and override
@@ -375,6 +378,16 @@ public class Upgrade : IEquatable<Upgrade>
         return !(left == right);
     }
     #endregion
+}
+public enum Rarity
+{
+    NONE,
+    COMMON,
+    UNCOMMON,
+    RARE,
+    EPIC,
+    LEGENDARY,
+    RELIC 
 }
 
 public delegate void LevelChanged(Upgrade _upgrade, int _previousLevel);

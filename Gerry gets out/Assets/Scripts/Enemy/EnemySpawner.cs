@@ -17,6 +17,8 @@ public class EnemySpawner : MonoBehaviour
     private static EnemySpawner m_Instance;
     public static EnemySpawner Get { get => m_Instance; }
 
+    private int p_Killcount;
+
     public float m_MinSpawnDistanceFromPlayer;
     [HideInInspector]
     public float m_CurrentEnemySpawnInterval;
@@ -55,6 +57,16 @@ public class EnemySpawner : MonoBehaviour
         }
 
     }
+
+    public int GetKillCount() => p_Killcount;
+    public void AddToKillCount()
+    {
+        p_Killcount++;
+        Debug.Log(p_Killcount);
+        if (p_Killcount % 5 == 0)
+            UpgradesUIManager.Get.StartUpgrade(3);
+    }
+
 
     public GameObject SpawnEnemy()
     {
