@@ -116,6 +116,7 @@ public class PlayerController : MonoBehaviour
         m_CurrentShootCooldown = ShootCooldownWithUpgrades;
     }
 
+    #region Invincible
     private void InvincibleCheck()
     {
         if (!IsInvincible)
@@ -148,6 +149,9 @@ public class PlayerController : MonoBehaviour
         }
         MakePlayerVisible();
     }
+    #endregion
+
+    #region Flash
     private void FlashTimer()
     {
         p_CurrentFlashCooldown = p_FlashTime;
@@ -174,6 +178,7 @@ public class PlayerController : MonoBehaviour
             p_AllPlayerCollidersMesh[i].enabled = !p_AllPlayerCollidersMesh[i].enabled;
         }
     }
+    #endregion
 
     private void OnCollisionEnter(Collision collision)
     {
