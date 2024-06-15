@@ -14,16 +14,33 @@ public class PlayerController : MonoBehaviour
     GameObject p_ShootStartPosition;
     [SerializeField]
     float p_ShootCooldown;
-    public Upgrades PlayerUpgrades { get; private set; }
+    [Header("Invincible Variables")]
+    [SerializeField]
+    float p_InvincibleTime;
+    [SerializeField]
+    float p_FlashTime;
+    float p_CurrentFlashCooldown;
+    [SerializeField]
+    float p_AddMovementspeedWhileInvincivble;
+    [SerializeField]
+    Collider[] p_EnemyColliders;
+    MeshRenderer[] p_AllPlayerCollidersMesh;
     #endregion
     #region public
+    [Header("Generic")]
     public int m_Speed;
     public int m_RotationSpeed;
     [HideInInspector]
     public float m_CurrentShootCooldown;
+    float m_CurrentInvincibleCooldown;
+    Collider p_PlayerCollider;
+    #endregion
+    #region Property
+    public Upgrades PlayerUpgrades { get; private set; }
+    public bool IsInvincible { get => m_CurrentInvincibleCooldown > 0; }
+    public float ShootCooldown { get => p_ShootCooldown; }
     #endregion
 
-    public float ShootCooldown { get => p_ShootCooldown; }
 
     #region Upgrades
     public float SpeedWithUpgrades { get => m_Speed * PlayerUpgrades.MoveSpeedMultiplierTotal; }
@@ -35,6 +52,10 @@ public class PlayerController : MonoBehaviour
     {
         p_CharacterController = GetComponent<CharacterController>();
         p_ShootProjectile = GetComponent<ShootProjectile>();
+        p_PlayerCollider = GetComponent<Collider>();
+
+        p_AllPlayerCollidersMesh = GetComponentsInChildren<MeshRenderer>();
+
         PlayerUpgrades = new Upgrades();
     }
 
@@ -47,6 +68,7 @@ public class PlayerController : MonoBehaviour
         Movement();
         Rotation();
         Shoot();
+        InvincibleCheck();
     }
 
     private void Movement()
@@ -58,6 +80,10 @@ public class PlayerController : MonoBehaviour
         // Player movement
         Vector3 movement = new Vector3(horizontalInput, 0, verticalInput);
         movement = movement.normalized;
+
+        if (IsInvincible)
+            movement *= p_AddMovementspeedWhileInvincivble;
+
         p_CharacterController.Move(movement * Time.deltaTime * SpeedWithUpgrades);
     }
     private void Rotation()
@@ -88,5 +114,76 @@ public class PlayerController : MonoBehaviour
         p_ShootProjectile.Shoot(this.gameObject, p_ShootStartPosition.transform.position);
         //Debug.DrawRay(p_ShootStartPosition.transform.position, this.transform.forward * 10, Color.black, 1);
         m_CurrentShootCooldown = ShootCooldownWithUpgrades;
+    }
+
+    private void InvincibleCheck()
+    {
+        if (!IsInvincible)
+            return;
+
+        p_CurrentFlashCooldown -= Time.deltaTime;
+        if (p_CurrentFlashCooldown <= 0)
+            FlashTimer();
+
+        m_CurrentInvincibleCooldown -= Time.deltaTime;
+        if (m_CurrentInvincibleCooldown < 0)
+            GetDefeatable();
+    }
+
+    private void GetInvincible()
+    {
+        m_CurrentInvincibleCooldown = p_InvincibleTime;
+        p_CurrentFlashCooldown = p_FlashTime;
+        for (int i = 0; i < p_EnemyColliders.Length; i++)
+        {
+            Physics.IgnoreCollision(p_PlayerCollider, p_EnemyColliders[i], true);
+        }
+    }
+    private void GetDefeatable()
+    {
+        m_CurrentInvincibleCooldown = 0;
+        for (int i = 0; i < p_EnemyColliders.Length; i++)
+        {
+            Physics.IgnoreCollision(p_PlayerCollider, p_EnemyColliders[i], false);
+        }
+        MakePlayerVisible();
+    }
+    private void FlashTimer()
+    {
+        p_CurrentFlashCooldown = p_FlashTime;
+        TogglePlayerVisibility();
+    }
+    private void MakePlayerInvisible()
+    {
+        for (int i = 0; i < p_AllPlayerCollidersMesh.Length; i++)
+        {
+            p_AllPlayerCollidersMesh[i].enabled = false;
+        }
+    }
+    private void MakePlayerVisible()
+    {
+        for (int i = 0; i < p_AllPlayerCollidersMesh.Length; i++)
+        {
+            p_AllPlayerCollidersMesh[i].enabled = true;
+        }
+    }
+    private void TogglePlayerVisibility()
+    {
+        for (int i = 0; i < p_AllPlayerCollidersMesh.Length; i++)
+        {
+            p_AllPlayerCollidersMesh[i].enabled = !p_AllPlayerCollidersMesh[i].enabled;
+        }
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        BaseEnemy enemy = collision.gameObject.GetComponent<BaseEnemy>();
+        if (enemy == null) return;
+
+        if (IsInvincible)
+            return;
+
+        GetInvincible();
+        MakePlayerInvisible();
     }
 }
