@@ -36,11 +36,6 @@ public class EnemySpawner : MonoBehaviour
         m_playerGameObject = GameObject.FindGameObjectWithTag("Player");
         m_playerController = m_playerGameObject.GetComponent<PlayerController>();
     }
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
 
     // Update is called once per frame
     void Update()
