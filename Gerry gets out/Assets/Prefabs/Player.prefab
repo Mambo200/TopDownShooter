@@ -127,10 +127,12 @@ MonoBehaviour:
   p_ShootStartPosition: {fileID: 5629150014694154849}
   p_ShootCooldown: 1.5
   p_InvincibleTime: 5
-  p_FlashTime: 0.3
+  p_FlashTime: 0.15
   p_AddMovementspeedWhileInvincivble: 2
   p_EnemyColliders:
   - {fileID: 3830185174448462623, guid: ebe9844bae2cd9145976a6037d74f1ee, type: 3}
+  m_Health: 2
+  m_Armor: 0
   m_Speed: 4
   m_RotationSpeed: 20
   m_CurrentShootCooldown: 0

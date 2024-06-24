@@ -7,8 +7,8 @@ using UnityEngine;
 public class PauseUI : MonoBehaviour
 {
     #region Singleton
-    private static PauseUI p_instance;
-    public static PauseUI Get { get => p_instance; }
+    private static PauseUI p_Instance;
+    public static PauseUI Get { get => p_Instance; }
     #endregion
 
     [SerializeField]
@@ -27,7 +27,13 @@ public class PauseUI : MonoBehaviour
     // Start is called before the first frame update
     private void Awake()
     {
-        p_instance = this;
+        if (p_Instance != null)
+        {
+            Debug.LogWarning($"There is already an instance of {nameof(GameOverUIManager)}, it will be deleted.");
+            Destroy(this.gameObject);
+            return;
+        }
+        p_Instance = this;
     }
     void Start()
     {
@@ -48,7 +54,8 @@ public class PauseUI : MonoBehaviour
 
     public void PausePressed()
     {
-        if (UpgradesUIManager.Get.UpgradeWindowOpen)
+        if (UpgradesUIManager.Get.UpgradeWindowOpen
+            || GameOverUIManager.Get.IsGameOver)
             return;
 
         if (Paused)

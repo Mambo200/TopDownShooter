@@ -27,8 +27,8 @@ public class UpgradesUIManager : MonoBehaviour
     {
         if (p_Instance != null)
         {
-            Debug.Log("There is already a " + nameof(UpgradesUIManager) + ". New instance will be deleted");
-            Destroy(p_Instance.gameObject);
+            Debug.LogWarning($"There is already an instance of {nameof(GameOverUIManager)}, it will be deleted.");
+            Destroy(this.gameObject);
             return;
         }
         p_Instance = this;
