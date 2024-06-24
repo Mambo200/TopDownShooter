@@ -14,6 +14,9 @@ public abstract class BaseEnemy : MonoBehaviour
     protected float m_CurrentHealth;
     [SerializeField]
     protected float m_Armor;
+    [SerializeField]
+    protected float m_Damage = 1;
+    public float Damage { get => m_Damage; }
 
     protected void Awake()
     {

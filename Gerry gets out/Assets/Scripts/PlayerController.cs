@@ -200,11 +200,13 @@ public class PlayerController : MonoBehaviour, IContact
 
         GetInvincible();
         MakePlayerInvisible();
+
+        ReceiveDamage(enemy.Damage);
     }
 
     #region Receiving damage or heal
     /// <summary>
-    /// Player receives damage
+    /// Player receives damage. Does not make player invincible
     /// </summary>
     /// <param name="_rawDamage">damage player should receive</param>
     public void ReceiveDamage(float _rawDamage)
@@ -225,7 +227,7 @@ public class PlayerController : MonoBehaviour, IContact
     }
     private void OnDeath()
     {
-        
+        GameOverUIManager.Get.InitGameOver();
     }
     /// <summary>
     /// This will be called right before player will get damaged
