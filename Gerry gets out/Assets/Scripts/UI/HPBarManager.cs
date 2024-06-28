@@ -1,3 +1,4 @@
+using Assets.Scripts.UI;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -18,6 +19,9 @@ public class HPBarManager : MonoBehaviour
     [SerializeField]
     private GameObject p_BaseHealthBarUI;
     #endregion
+
+    public Color m_MaxHealthColor;
+    public Color m_CurrentHealthColor;
 
     private PlayerController p_Player;
 
@@ -64,7 +68,7 @@ public class HPBarManager : MonoBehaviour
         // set text
         if (p_HealthbarText == null)
             return;
-        p_HealthbarText.text = $"{currentHP} / {maxHP}";
+        p_HealthbarText.text = $"{HTMLTagsHelper.StartColor(m_CurrentHealthColor)}{currentHP}{HTMLTagsHelper.EndColor()} / {HTMLTagsHelper.StartColor(m_MaxHealthColor)}{maxHP}{HTMLTagsHelper.EndColor()}";
     }
 
     public void Hide()
