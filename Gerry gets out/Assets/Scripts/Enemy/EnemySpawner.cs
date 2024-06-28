@@ -13,6 +13,7 @@ public class EnemySpawner : MonoBehaviour
     float p_SpawnRadius;
     [SerializeField]
     float p_MaxEnemySpawnInterval;
+    public int m_EnemyKillCountToUpgradeModulo = 10;
 
     private static EnemySpawner m_Instance;
     public static EnemySpawner Get { get => m_Instance; }
@@ -57,8 +58,8 @@ public class EnemySpawner : MonoBehaviour
     public void AddToKillCount()
     {
         p_Killcount++;
-        Debug.Log(p_Killcount);
-        if (p_Killcount % 5 == 0)
+        KillCountUIManager.Get.SetKillCountText(p_Killcount.ToString());
+        if (p_Killcount % m_EnemyKillCountToUpgradeModulo == 0)
             UpgradesUIManager.Get.StartUpgrade(3);
     }
 
