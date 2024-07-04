@@ -27,6 +27,7 @@ public class PlayerController : MonoBehaviour, IContact
     MeshRenderer[] p_AllPlayerCollidersMesh;
     [Header("Health")]
     [SerializeField]
+    private float m_MaxHealth;
     private float m_Health;
     [SerializeField]
     private float m_Armor;
@@ -45,6 +46,7 @@ public class PlayerController : MonoBehaviour, IContact
     public bool IsInvincible { get => m_CurrentInvincibleCooldown > 0; }
     public float ShootCooldown { get => p_ShootCooldown; }
     public float Health { get => m_Health; }
+    public float MaxHealth { get => m_MaxHealth; }
     public float Armor { get => m_Armor; }
     #endregion
 
@@ -54,9 +56,14 @@ public class PlayerController : MonoBehaviour, IContact
     public float SpeedWithUpgrades { get => m_Speed * PlayerUpgrades.MoveSpeedMultiplierTotal; }
     public float ShootCooldownWithUpgrades { get => p_ShootCooldown * PlayerUpgrades.ShootSpeedMultiplierTotal; }
     #endregion
-    
 
 
+    private void Awake()
+    {
+        // has to be called here to UI works fine
+        m_Health = m_MaxHealth;
+
+    }
     // Start is called before the first frame update
     void Start()
     {
@@ -224,6 +231,7 @@ public class PlayerController : MonoBehaviour, IContact
     public void Heal(float _healamount)
     {
         m_Health += _healamount;
+        HPBarManager.Get.SetHealth();
     }
     private void OnDeath()
     {
@@ -246,6 +254,7 @@ public class PlayerController : MonoBehaviour, IContact
     /// <returns>new health of player</returns>
     private float AfterReceivingDamage(float _newHealth)
     {
+        HPBarManager.Get.SetHealth();
         return _newHealth;
     }
     /// <summary>
