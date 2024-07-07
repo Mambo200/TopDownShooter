@@ -6,6 +6,7 @@ using UnityEngine;
 
 public class PauseUI : MonoBehaviour
 {
+    private const int ROUNDDIGITS = 3;
     #region Singleton
     private static PauseUI p_Instance;
     public static PauseUI Get { get => p_Instance; }
@@ -87,30 +88,30 @@ public class PauseUI : MonoBehaviour
     private string GetUpgradesText()
     {
         string tr = "Movespeed: "
-            + EnemySpawner.Get.m_playerController.PlayerUpgrades.MoveSpeedMultiplierTotal * EnemySpawner.Get.m_playerController.m_Speed
+            + Math.Round(EnemySpawner.Get.m_playerController.PlayerUpgrades.MoveSpeedMultiplierTotal * EnemySpawner.Get.m_playerController.m_Speed, ROUNDDIGITS)
             + " ("
             + EnemySpawner.Get.m_playerController.m_Speed
             + " * "
-            + EnemySpawner.Get.m_playerController.PlayerUpgrades.MoveSpeedMultiplierTotal
+            + Math.Round(EnemySpawner.Get.m_playerController.PlayerUpgrades.MoveSpeedMultiplierTotal, ROUNDDIGITS)
             + ")";
         tr += Environment.NewLine;
 
         tr += "Shoot speed: "
-            + EnemySpawner.Get.m_playerController.PlayerUpgrades.ShootSpeedMultiplierTotal * EnemySpawner.Get.m_playerController.ShootCooldown
+            + Math.Round(EnemySpawner.Get.m_playerController.PlayerUpgrades.ShootSpeedMultiplierTotal * EnemySpawner.Get.m_playerController.ShootCooldown, ROUNDDIGITS)
             + " sec"
             + " ("
             + EnemySpawner.Get.m_playerController.ShootCooldown
             + " * "
-            + EnemySpawner.Get.m_playerController.PlayerUpgrades.ShootSpeedMultiplierTotal
+            + Math.Round(EnemySpawner.Get.m_playerController.PlayerUpgrades.ShootSpeedMultiplierTotal, ROUNDDIGITS)
             + ")";
         tr += Environment.NewLine;
 
         tr += "Damage: "
-            + EnemySpawner.Get.m_playerController.PlayerUpgrades.DamageMultiplierTotal * p_ProjectileBaseDamage
+            + Math.Round(EnemySpawner.Get.m_playerController.PlayerUpgrades.DamageMultiplierTotal * p_ProjectileBaseDamage, ROUNDDIGITS)
             + " ("
             + p_ProjectileBaseDamage
             + " * "
-            + EnemySpawner.Get.m_playerController.PlayerUpgrades.DamageMultiplierTotal
+            + Math.Round(EnemySpawner.Get.m_playerController.PlayerUpgrades.DamageMultiplierTotal, ROUNDDIGITS)
             + ")";
         tr += Environment.NewLine;
 
