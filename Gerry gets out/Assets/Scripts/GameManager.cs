@@ -50,6 +50,5 @@ public class GameManager : MonoBehaviour
     private void ResetEverything()
     {
         Time.timeScale = 1.0f;
-        GameOverUIManager.Get.RevertGameOver();
     }
 }
