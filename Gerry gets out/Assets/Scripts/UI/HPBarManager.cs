@@ -21,6 +21,7 @@ public class HPBarManager : MonoBehaviour
     #endregion
 
     public Color m_MaxHealthColor;
+    public Color m_SeperatorColor;
     public Color m_CurrentHealthColor;
 
     private PlayerController p_Player;
@@ -68,7 +69,7 @@ public class HPBarManager : MonoBehaviour
         // set text
         if (p_HealthbarText == null)
             return;
-        p_HealthbarText.text = $"{HTMLTagsHelper.StartColor(m_CurrentHealthColor)}{currentHP}{HTMLTagsHelper.EndColor()} / {HTMLTagsHelper.StartColor(m_MaxHealthColor)}{maxHP}{HTMLTagsHelper.EndColor()}";
+        p_HealthbarText.text = $"{HTMLTagsHelper.StartColor(m_CurrentHealthColor)}{currentHP}{HTMLTagsHelper.EndColor()} {HTMLTagsHelper.StartColor(m_SeperatorColor)}/{HTMLTagsHelper.EndColor()} {HTMLTagsHelper.StartColor(m_MaxHealthColor)}{maxHP}{HTMLTagsHelper.EndColor()}";
     }
 
     public void Hide()
