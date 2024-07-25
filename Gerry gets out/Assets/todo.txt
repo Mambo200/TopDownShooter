@@ -1,0 +1,4 @@
+Mehr Gegner
+	HP und Movespeed Gegner anpassen
+Spawnrate Gegner anpassen
+Zeitpunkte für erhaltene Upgrades anpassen
