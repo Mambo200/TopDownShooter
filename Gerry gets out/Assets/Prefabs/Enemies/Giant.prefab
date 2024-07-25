@@ -175,7 +175,7 @@ MonoBehaviour:
   m_MaxHealth: 20
   m_Armor: 2
   m_Damage: 2
-  p_Acceleration: 100
+  p_Acceleration: 3
   p_Speed: 3
 --- !u!1 &7996213021268258324
 GameObject:
