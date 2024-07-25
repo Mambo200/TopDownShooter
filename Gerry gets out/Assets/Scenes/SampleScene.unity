@@ -1890,8 +1890,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   p_ToSpawn:
   - {fileID: 8188523974136360354, guid: ebe9844bae2cd9145976a6037d74f1ee, type: 3}
+  - {fileID: 3308867798387177156, guid: b5f098745e9d9e84281d214517ea03dd, type: 3}
+  p_MiniBossToSpawn:
+  - {fileID: 466382140264520457, guid: 8ca4c18c54b56124a8483e13bd78dd6a, type: 3}
   p_SpawnRadius: 100
-  p_MaxEnemySpawnInterval: 2
+  p_MaxEnemySpawnInterval: 4
   m_EnemyKillCountToUpgradeModulo: 10
   m_MinSpawnDistanceFromPlayer: 25
   m_CurrentEnemySpawnInterval: 0
@@ -2176,7 +2179,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 40.45
+  m_fontSize: 26.2
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -2754,7 +2757,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 72
+  m_fontSize: 69.4
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -3463,6 +3466,10 @@ PrefabInstance:
     - target: {fileID: 1633666416027557388, guid: 1566bbcbd2faeb744a107f711341abed, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6436885114789803112, guid: 1566bbcbd2faeb744a107f711341abed, type: 3}
+      propertyPath: m_Speed
+      value: 4
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

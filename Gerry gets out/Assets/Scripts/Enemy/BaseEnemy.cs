@@ -17,6 +17,11 @@ public abstract class BaseEnemy : MonoBehaviour
     [SerializeField]
     protected float m_Damage = 1;
     public float Damage { get => m_Damage; }
+    [Header("Navmesh Variables")]
+    [SerializeField]
+    private float p_Acceleration = 8;
+    [SerializeField]
+    private float p_Speed = 5;
 
     protected void Awake()
     {
@@ -34,6 +39,9 @@ public abstract class BaseEnemy : MonoBehaviour
     {
         m_CurrentHealth = m_MaxHealth;
         m_NavMeshAgent = GetComponent<NavMeshAgent>();
+
+        m_NavMeshAgent.acceleration = p_Acceleration;
+        m_NavMeshAgent.speed = p_Speed;
     }
 
     // Update is called once per frame
@@ -41,6 +49,8 @@ public abstract class BaseEnemy : MonoBehaviour
     {
         // move to player. If this is not wanted use "isStopped = true" on child
         m_NavMeshAgent.destination = m_playerGameObject.transform.position;
+        float f = m_NavMeshAgent.acceleration;
+        float ff = m_NavMeshAgent.speed;
     }
 
     virtual public bool TakeDamage(float _damage)
@@ -71,4 +81,11 @@ public abstract class BaseEnemy : MonoBehaviour
         EnemySpawner.Get.AddToKillCount();
         Destroy(this.gameObject);
     }
+
+    #region get/set navmesh variables
+    public float GetSpeed() => m_NavMeshAgent.speed;
+    public float GetAcceleration => m_NavMeshAgent.acceleration;
+    public void SetSpeed(float _speed) => m_NavMeshAgent.speed = _speed;
+    public void SetAcceleration(float _acceleration) => m_NavMeshAgent.acceleration = _acceleration;
+    #endregion
 }
