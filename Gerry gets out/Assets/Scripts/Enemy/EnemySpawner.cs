@@ -5,10 +5,16 @@ using UnityEngine.AI;
 
 public class EnemySpawner : MonoBehaviour
 {
+    [Header("GO Spawn")]
     [SerializeField]
     GameObject[] p_ToSpawn;
+    [SerializeField]
+    GameObject[] p_MiniBossToSpawn;
+
     public GameObject m_playerGameObject { get; private set; }
     public PlayerController m_playerController { get; private set; }
+    
+    [Header("Spawn Variables")]
     [SerializeField]
     float p_SpawnRadius;
     [SerializeField]
@@ -44,7 +50,8 @@ public class EnemySpawner : MonoBehaviour
         m_CurrentEnemySpawnInterval -= Time.deltaTime;
         if(m_CurrentEnemySpawnInterval <= 0)
         {
-            GameObject spawned = SpawnEnemy();
+
+            GameObject spawned = SpawnEnemy(GetRandomEnemy());
             m_CurrentEnemySpawnInterval = p_MaxEnemySpawnInterval;
             //if(spawned)
             //    Debug.Log("Enemy spawned", spawned);
@@ -63,15 +70,21 @@ public class EnemySpawner : MonoBehaviour
             UpgradesUIManager.Get.StartUpgrade(3);
     }
 
+    /// <summary>Get random enemy from <see cref="p_ToSpawn"/></summary>
+    /// <returns>Prefab</returns>
+    public GameObject GetRandomEnemy() => p_ToSpawn[Random.Range(0, p_ToSpawn.Length)];
+    /// <summary>Get random enemy from <see cref="p_MiniBossToSpawn"/></summary>
+    /// <returns>Prefab</returns>
+    public GameObject GetRandomMiniBoss() => p_MiniBossToSpawn[Random.Range(0, p_MiniBossToSpawn.Length)];
 
-    public GameObject SpawnEnemy()
+
+    public GameObject SpawnEnemy(GameObject _toSpawn)
     {
         Vector3 spawnPosition;
         GameObject spawned = null;
         if (TryGetRandomNavMeshPosition(out spawnPosition))
         {
-            int toSpawn = Random.Range(0, p_ToSpawn.Length);
-            spawned = Instantiate(p_ToSpawn[toSpawn], spawnPosition, Quaternion.identity, this.gameObject.transform);
+            spawned = Instantiate(_toSpawn, spawnPosition, Quaternion.identity, this.gameObject.transform);
         }
 
         return spawned;
